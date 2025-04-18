@@ -17,7 +17,8 @@ class GameActivity : ComponentActivity(), GameProgressListener {
     private lateinit var gameProgress: GameProgress
     private lateinit var gameMode: String
     private var isPvCMode: Boolean = false
-    private var playerName: String = ""
+    private var playerXName: String = ""
+    private var playerOName: String = ""
 
 
     private val handler = Handler(Looper.getMainLooper()) // for delay before PvC makes turn
@@ -32,7 +33,8 @@ class GameActivity : ComponentActivity(), GameProgressListener {
 
         gameMode = intent.getStringExtra("GAME_MODE") ?: "PvP"
         isPvCMode = (gameMode == "PvC")
-        playerName = intent.getStringExtra("PLAYER_NAME") ?: "Player"
+        playerXName = intent.getStringExtra("PLAYER_NAME_X") ?: "Player X"
+        playerOName = intent.getStringExtra("PLAYER_NAME_O") ?: "Player O"
 
         gameProgress = GameProgress(this)
 
@@ -42,8 +44,8 @@ class GameActivity : ComponentActivity(), GameProgressListener {
     private fun updateTurnText() {
         val currentTurn = gameProgress.getCurrentTurn()
         val playerText = when (currentTurn) {
-            Player.X -> "$playerName's turn"
-            Player.O -> if (isPvCMode) "Computer's turn" else "Player O's turn"
+            Player.X -> "$playerXName's turn"
+            Player.O -> if (isPvCMode) "Computer's turn" else "$playerOName's turn"
             else -> "Waiting for a turn"
         }
         turnTextView.text = playerText
@@ -60,8 +62,8 @@ class GameActivity : ComponentActivity(), GameProgressListener {
 
     override fun onGameFinished(winner: Player) {
         val winnerText = when (winner) {
-            Player.X -> "$playerName wins!"
-            Player.O -> "Player O wins!"
+            Player.X -> "$playerXName wins!"
+            Player.O -> "$playerOName wins!"
             else -> "It's a draw!"
         }
 

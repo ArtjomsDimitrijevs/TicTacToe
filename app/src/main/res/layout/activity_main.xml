@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="20dp"
         android:text="Tic Tac Toe"
         android:textColor="#333333"
         android:textSize="28sp"
@@ -21,17 +21,35 @@
 
 
     <EditText
-        android:id="@+id/playerNameInput"
+        android:id="@+id/player1NameInput"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edittext"
-        android:hint="Enter your name..."
+        android:hint="Enter Player 1 name..."
         android:padding="12dp"
         android:textColor="#333333"
         android:textColorHint="#888888"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/player2NameInput"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Enter Player 2 name..."
+        android:textColor="#333333"
+        android:textColorHint="#888888"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_marginTop="8dp" />
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
