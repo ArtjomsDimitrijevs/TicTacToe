@@ -5,5 +5,5 @@ enum class Player(symbol: Char) {
     O('O'),
     NONE(' ');
 
-    fun nextPlayer(): Player = if (this == X) O else X
+    fun nextPlayer(): Player = if (this == X) O else X // to get next player
 }
