@@ -33,8 +33,14 @@ class GameActivity : ComponentActivity(), GameProgressListener {
 
         gameMode = intent.getStringExtra("GAME_MODE") ?: "PvP"
         isPvCMode = (gameMode == "PvC")
-        playerXName = intent.getStringExtra("PLAYER_NAME_X") ?: "Player X"
-        playerOName = intent.getStringExtra("PLAYER_NAME_O") ?: "Player O"
+
+        if (isPvCMode) {
+            playerXName = intent.getStringExtra("PLAYER_NAME") ?: "Player X"
+            playerOName = "Computer"
+        } else {
+            playerXName = intent.getStringExtra("PLAYER_X_NAME") ?: "Player X"
+            playerOName = intent.getStringExtra("PLAYER_O_NAME") ?: "Player O"
+        }
 
         gameProgress = GameProgress(this)
 

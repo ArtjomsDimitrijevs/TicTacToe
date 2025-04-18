@@ -12,8 +12,6 @@ import androidx.activity.enableEdgeToEdge
 class MainActivity : ComponentActivity() {
 
     private var isPvC: Boolean? = null
-    //private lateinit var pvpButton: Button
-    //private lateinit var pvcButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,8 +90,8 @@ class MainActivity : ComponentActivity() {
     private fun startGame(player1Name: String, player2Name: String) {
         val intent = Intent(this, GameActivity::class.java).apply {
             putExtra("GAME_MODE", "PvP")
-            putExtra("PLAYER_NAME_X", player1Name)
-            putExtra("PLAYER_NAME_O", player2Name)
+            putExtra("PLAYER_X_NAME", player1Name)
+            putExtra("PLAYER_O_NAME", player2Name)
         }
         startActivity(intent)
     }
