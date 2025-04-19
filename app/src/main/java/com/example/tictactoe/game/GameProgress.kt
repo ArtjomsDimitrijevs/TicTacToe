@@ -14,11 +14,13 @@ class GameProgress(private val listener: GameProgressListener) : IGameBoard by G
     val firstTurn = Player.X
     private var currentTurn = firstTurn
         private set  // so that the value cannot be set from outside
-    fun getCurrentTurn(): Player = currentTurn  // return current turn
-
+    fun getCurrentTurn(): Player = currentTurn // return current player(maybe turn isn't very good name for ths variable and method)
+    fun setCurrentTurn(player : Player) {
+        currentTurn = player
+    }
 
     fun makeMove(row: Int, col: Int): Boolean {
-        if (!gameBoard.setCell(currentTurn, row, col)) return false  // if you isn't possible to  make a move
+        if (!gameBoard.setCell(currentTurn, row, col)) return false  // if you can't make a move
                                                                      // return false
         val winner = checkWinner()
 

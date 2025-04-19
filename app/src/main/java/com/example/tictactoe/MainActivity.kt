@@ -147,19 +147,13 @@ class MainActivity : ComponentActivity() {
         outState.putString("PLAYER_X_NAME", player1NameInput.text.toString())
         outState.putString("PLAYER_O_NAME", player2NameInput.text.toString())
         outState.putBoolean("IS_PVC_SELECTED", isPvC == true)
-        //outState.putBoolean("IS_PVP_SELECTED", isPvC == false)
-
-
     }
-
-
 
 
 
     private fun highlightSelectedButton(button: Button) {
         button.isSelected = true
     }
-
     private fun unhighlightButton(button: Button) {
         button.isSelected = false
     }

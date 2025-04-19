@@ -29,6 +29,7 @@ class GameActivity : ComponentActivity(), GameProgressListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
+
         turnTextView = findViewById(R.id.turnTextView)
 
 
@@ -45,7 +46,49 @@ class GameActivity : ComponentActivity(), GameProgressListener {
 
         gameProgress = GameProgress(this)
 
+        if (savedInstanceState != null) {
+            restoreGameState(savedInstanceState)
+        }
+
+
         updateTurnText()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val boardState = Array(3) { row ->
+            Array(3) { col ->
+                gameProgress.gameBoard.board[row][col].name
+            }
+        }
+
+        outState.putSerializable("BOARD_STATE", boardState)   // 2d dimension board with players
+        outState.putString("CURRENT_PLAYER", gameProgress.getCurrentTurn().name) // to save current turn to restore it after rotation
+    }
+
+    private fun restoreGameState(savedInstanceState: Bundle) {
+        val boardState = savedInstanceState.getSerializable("BOARD_STATE") as? Array<Array<String>>
+        val currentPlayer = savedInstanceState.getString("CURRENT_PLAYER")
+
+        if (boardState != null && currentPlayer != null) {
+            for (row in 0..2) {
+                for (col in 0..2) {
+                    val player = Player.valueOf(boardState[row][col])
+                    gameProgress.gameBoard.board[row][col] = player
+
+                    val buttonId = resources.getIdentifier("button$row$col", "id", packageName)
+                    val button = findViewById<Button>(buttonId)
+                    button.text = when (player) {
+                        Player.X -> "X"
+                        Player.O -> "O"
+                        else -> ""
+                    }
+                    button.isEnabled = (player == Player.NONE)
+                }
+            }
+            gameProgress.setCurrentTurn(Player.valueOf(currentPlayer))
+        }
     }
 
     private fun updateTurnText() {
@@ -144,7 +187,7 @@ class GameActivity : ComponentActivity(), GameProgressListener {
     }
 
 
-    private fun makeComputerMove() {  // gemini in Android studio suggested this implementation of randoming computer's move
+    private fun makeComputerMove() {  // built-in gemini in Android studio suggested this implementation of randoming computer's move
         val emptyCells = gameProgress.gameBoard.board.flatMapIndexed { rowIndex, row ->
             row.mapIndexedNotNull { colIndex, player ->
                 if (player == Player.NONE) rowIndex * 3 + colIndex else null
