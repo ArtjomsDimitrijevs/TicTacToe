@@ -78,6 +78,31 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() { // to reset all fields after returning to main(start) screen
+        super.onResume() //
+        resetStartScreen() // reset the game mode selection
+    }
+
+    private fun resetStartScreen() {
+        val pvpButton = findViewById<Button>(R.id.buttonPvP)
+        val pvcButton = findViewById<Button>(R.id.buttonPvC)
+        val player1NameInput = findViewById<EditText>(R.id.player1NameInput)
+        val player2NameInput = findViewById<EditText>(R.id.player2NameInput)
+
+        player1NameInput.text.clear()
+        player2NameInput.text.clear()
+        isPvC = null
+        unhighlightButton(pvpButton)
+        unhighlightButton(pvcButton)
+        player1NameInput.visibility = View.GONE
+        player2NameInput.visibility = View.GONE
+    }
+
+
+
+
+
+
     private fun highlightSelectedButton(button: Button) {
         button.isSelected = true
     }
@@ -103,5 +128,7 @@ class MainActivity : ComponentActivity() {
         }
         startActivity(intent)
     }
+
+
 
 }
