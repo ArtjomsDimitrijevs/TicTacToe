@@ -12,11 +12,14 @@ import androidx.activity.enableEdgeToEdge
 class MainActivity : ComponentActivity() {
 
     private var isPvC: Boolean? = null // nullable to enforce game mode selection before starting the game
+    private var resetMainScreenState = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        resetMainScreenState = intent.getBooleanExtra("RESET_GAME", false)
 
         // get all necessary elements from xml layout
         val pvpButton = findViewById<Button>(R.id.buttonPvP)
@@ -24,6 +27,36 @@ class MainActivity : ComponentActivity() {
         val playButton = findViewById<Button>(R.id.playButton)
         val player1NameInput = findViewById<EditText>(R.id.player1NameInput)
         val player2NameInput = findViewById<EditText>(R.id.player2NameInput)
+
+        // restore state of the screen after rotation
+        // LLM ChatGPT-4o helped to implement state saving after rotation
+        // prompt: "how can i make the app to keep state when user rotate the screen,
+        // but reset when user go back to the main screen from the game screen?"
+        if (savedInstanceState != null) {
+            player1NameInput.setText(savedInstanceState.getString("PLAYER_X_NAME", ""))
+            player2NameInput.setText(savedInstanceState.getString("PLAYER_O_NAME", ""))
+            val isPvcSelected = savedInstanceState.getBoolean("IS_PVC_SELECTED", false)
+
+            when {
+                isPvcSelected -> {
+                    isPvC = true
+                    highlightSelectedButton(pvcButton)
+                    unhighlightButton(pvpButton)
+                    player1NameInput.visibility = View.VISIBLE
+                    player2NameInput.visibility = View.GONE
+                }
+                !isPvcSelected -> {
+                    isPvC = false
+                    highlightSelectedButton(pvpButton)
+                    unhighlightButton(pvcButton)
+                    player1NameInput.visibility = View.VISIBLE
+                    player2NameInput.visibility = View.VISIBLE
+                }
+            }
+
+        }
+
+
 
         pvpButton.setOnClickListener {
             isPvC = false  // to control what game mode selected and intent data later
@@ -79,8 +112,12 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onResume() { // to reset all fields after returning to main(start) screen
-        super.onResume() //
-        resetStartScreen() // reset the game mode selection
+        super.onResume()
+        if (resetMainScreenState) { // only if we go back from the game screen
+                                    // otherwise state will be saved (after rotation)
+            resetStartScreen() // reset the game mode selection
+            resetMainScreenState = false // reset is not needed anymore, so false
+        }
     }
 
     private fun resetStartScreen() {
@@ -98,6 +135,22 @@ class MainActivity : ComponentActivity() {
         player2NameInput.visibility = View.GONE
     }
 
+    // LLM ChatGPT-4o helped to implement onSaveInstanceState for rotation
+    // prompt: "how can i make the app state persist when i rotate the screen?"
+    override fun onSaveInstanceState(outState: Bundle) {
+        // save the game mode state for screen rotation
+        super.onSaveInstanceState(outState)
+
+        val player1NameInput = findViewById<EditText>(R.id.player1NameInput)
+        val player2NameInput = findViewById<EditText>(R.id.player2NameInput)
+
+        outState.putString("PLAYER_X_NAME", player1NameInput.text.toString())
+        outState.putString("PLAYER_O_NAME", player2NameInput.text.toString())
+        outState.putBoolean("IS_PVC_SELECTED", isPvC == true)
+        //outState.putBoolean("IS_PVP_SELECTED", isPvC == false)
+
+
+    }
 
 
 

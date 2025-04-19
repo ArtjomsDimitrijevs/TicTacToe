@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import android.app.AlertDialog
+import android.content.Intent
 import com.example.tictactoe.game.GameProgress
 import com.example.tictactoe.game.GameProgressListener
 import com.example.tictactoe.game.Player
@@ -107,6 +108,10 @@ class GameActivity : ComponentActivity(), GameProgressListener {
 
 
     private fun navigateToMainMenu() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("RESET_GAME", true) // like a flag that we want to reset the main menu state
+                                                        // from end of the game
+        startActivity(intent)
         finish()
     }
 
