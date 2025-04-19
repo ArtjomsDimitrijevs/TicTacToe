@@ -144,22 +144,22 @@ class MainActivity : ComponentActivity() {
         val player1NameInput = findViewById<EditText>(R.id.player1NameInput)
         val player2NameInput = findViewById<EditText>(R.id.player2NameInput)
 
-        outState.putString("PLAYER_X_NAME", player1NameInput.text.toString())
+        outState.putString("PLAYER_X_NAME", player1NameInput.text.toString())  // save player's names
         outState.putString("PLAYER_O_NAME", player2NameInput.text.toString())
-        outState.putBoolean("IS_PVC_SELECTED", isPvC == true)
+        outState.putBoolean("IS_PVC_SELECTED", isPvC == true) // save game mode
     }
 
 
 
     private fun highlightSelectedButton(button: Button) {
-        button.isSelected = true
+        button.isSelected = true  // to highlight selected button(selected game mode) with blue color
     }
     private fun unhighlightButton(button: Button) {
-        button.isSelected = false
+        button.isSelected = false // opposite - unhighlight
     }
 
 
-    private fun startGame(playerName: String) {
+    private fun startGame(playerName: String) {     // function that starts the game with PvC (1 player) mode
         val intent = Intent(this, GameActivity::class.java).apply {
             putExtra("GAME_MODE", "PvC")
             putExtra("PLAYER_NAME", playerName)
@@ -167,15 +167,13 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
     }
 
-    private fun startGame(player1Name: String, player2Name: String) {
+    private fun startGame(player1Name: String, player2Name: String) {   // function that starts the game with PvP (2 players) mode
         val intent = Intent(this, GameActivity::class.java).apply {
-            putExtra("GAME_MODE", "PvP")
-            putExtra("PLAYER_X_NAME", player1Name)
+            putExtra("GAME_MODE", "PvP")    // intent data to GameActivity, game mode
+            putExtra("PLAYER_X_NAME", player1Name) // and player's names
             putExtra("PLAYER_O_NAME", player2Name)
         }
-        startActivity(intent)
+        startActivity(intent)   // start the game(activity) with intent
     }
-
-
 
 }

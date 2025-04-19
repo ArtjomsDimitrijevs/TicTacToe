@@ -6,6 +6,6 @@ package com.example.tictactoe.game
 interface IGameBoard {
     fun getCell(row: Int, col: Int): Player
     fun setCell(player: Player, row: Int, col: Int): Boolean
-    fun isFull(): Boolean
+    fun isFull(): Boolean   // returns true or false depending on whether the board is full or not
     fun reset()
 }

@@ -1,6 +1,6 @@
 package com.example.tictactoe.game
 
-enum class Player(symbol: Char) {
+enum class Player(symbol: Char) {           // representing players - X and O
     X('X'),
     O('O'),
     NONE(' ');
